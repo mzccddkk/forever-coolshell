@@ -34,7 +34,7 @@ func main() {
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
 
 	r.GET("/", func(c *gin.Context) {
-		c.Redirect(http.StatusFound, "/page/1.html")
+		c.Redirect(http.StatusFound, "/page/0.html")
 	})
 
 	assets, _ := fs.Sub(Assets, "assets")
@@ -61,16 +61,17 @@ func main() {
 	log.Println()
 	log.Println("工具使用：")
 	log.Println("    如果你需要改变端口，可以使用环境变量 PORT 来指定端口，例如：")
-	log.Println("    PORT=8080 ./forever-coolshell ")
+	log.Println("    PORT=8080 ./coolshell")
 
+	host := "http://localhost"
 	port := "8080"
 	portEnv := os.Getenv("PORT")
 	p, err := strconv.ParseInt(portEnv, 10, 64)
 	if err != nil {
-		log.Println("使用默认端口", port)
+		log.Println("使用默认端口：", host+":"+port)
 	} else {
 		port = fmt.Sprintf("%d", p)
-		log.Println("使用指定端口", port)
+		log.Println("使用指定端口：", host+":"+port)
 	}
 
 	if err := r.Run(":" + port); err != nil {
